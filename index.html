@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>CookMe Teste</title>
+</head>
+<body>
+    <h1>CookMe — Teste AI</h1>
+
+    <input id="ingredients" placeholder="Digite ingredientes...">
+    <button onclick="send()">Gerar Receita</button>
+
+    <pre id="output"></pre>
+
+<script>
+async function send() {
+    const ingredients = document.getElementById("ingredients").value;
+
+    const prompt = `
+      Gere 3 receitas criativas usando: ${ingredients}.
+      Responda somente em JSON.
+      [
+        {
+          "title": "",
+          "time": "",
+          "tags": [],
+          "ingredients": [],
+          "steps": []
+        }
+      ]
+    `;
+
+    const res = await fetch("/api/ai", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+    });
+
+    const data = await res.json();
+    document.getElementById("output").textContent = data.result;
+}
+</script>
+</body>
+</html>
